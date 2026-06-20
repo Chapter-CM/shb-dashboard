@@ -1,0 +1,6 @@
+{
+  "outputDirectory": ".",
+  "rewrites": [
+    { "source": "/((?!api/|data\\.json|config\\.json|.*\\..*).*)", "destination": "/index_preview.html" }
+  ]
+}
