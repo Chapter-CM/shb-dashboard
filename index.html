@@ -84,6 +84,22 @@
 </head>
 <body>
 <div id="root"></div>
+<div id="err-overlay" style="display:none;position:fixed;inset:0;background:#0a0a0f;z-index:99999;padding:40px;font-family:monospace;color:#fb7185;overflow:auto;">
+  <div style="font-size:18px;font-weight:700;margin-bottom:16px;">⚠ Dashboard Error</div>
+  <pre id="err-msg" style="font-size:12px;white-space:pre-wrap;word-break:break-all;color:#fca5a5;background:#15151f;padding:16px;border-radius:8px;border:1px solid #fb718533;"></pre>
+  <div style="margin-top:16px;font-size:11px;color:#7a7a90;">Gửi nội dung trên cho admin để xử lý</div>
+</div>
+<script>
+window.__showErr=function(msg,src,line,col,err){
+  document.getElementById("err-overlay").style.display="block";
+  document.getElementById("err-msg").textContent=(err?err.stack||err:msg)+"
+
+Source: "+src+"
+Line: "+line+":"+col;
+};
+window.onerror=function(msg,src,line,col,err){window.__showErr(msg,src,line,col,err);return false;};
+window.addEventListener("unhandledrejection",function(e){window.__showErr("Unhandled Promise: "+(e.reason?.stack||e.reason||e),"",0,0,null);});
+</script>
 <script type="text/babel" data-presets="react">
 
 
