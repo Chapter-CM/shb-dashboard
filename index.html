@@ -13,72 +13,84 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style id="theme-vars">
-    /* ============ THEME TOKENS ============ */
+    /* ============ THEME TOKENS v2 — inspired by CRM Dark + Glassmorphism ============ */
     :root, :root[data-theme="dark"] {
-      --bg: #0A0A0F;
-      --bg-sidebar: #0C0C13;
-      --surface: #15151F;
-      --surface-hi: #1C1C29;
+      /* Deep navy dark — richer than pure black, like template 2 CRM */
+      --bg: #080B14;
+      --bg-sidebar: #0A0D1A;
+      --surface: #0F1220;
+      --surface-hi: #161928;
       --text-bright: #FFFFFF;
-      --text: #ECECF2;
-      --text-hd: #D4D4E0;
-      --text-2: #B0B0C2;
-      --text-3: #9090A6;
-      --text-muted: #7A7A90;
-      --text-4: #6C6C82;
-      --text-5: #5A5A70;
-      --text-dim: #4D4D62;
-      --text-dimmer: #3D3D50;
-      --text-faint: #2C2C3C;
-      --fg-rgb: 255,255,255;
-      --fg-01: rgba(255,255,255,0.012);
-      --fg-02: rgba(255,255,255,0.022);
-      --fg-03: rgba(255,255,255,0.032);
-      --fg-04: rgba(255,255,255,0.045);
-      --fg-05: rgba(255,255,255,0.055);
-      --fg-06: rgba(255,255,255,0.07);
-      --fg-07: rgba(255,255,255,0.08);
-      --fg-08: rgba(255,255,255,0.095);
-      --fg-10: rgba(255,255,255,0.12);
-      --fg-12: rgba(255,255,255,0.15);
-      --fg-15: rgba(255,255,255,0.20);
+      --text: #E8ECFF;
+      --text-hd: #CBD1F0;
+      --text-2: #A8B2D8;
+      --text-3: #8891B8;
+      --text-muted: #6B7499;
+      --text-4: #565E80;
+      --text-5: #444C6A;
+      --text-dim: #353D58;
+      --text-dimmer: #282F48;
+      --text-faint: #1C2235;
+      --fg-rgb: 180,190,255;
+      --fg-01: rgba(120,130,200,0.04);
+      --fg-02: rgba(120,130,200,0.06);
+      --fg-03: rgba(120,130,200,0.08);
+      --fg-04: rgba(120,130,200,0.10);
+      --fg-05: rgba(120,130,200,0.13);
+      --fg-06: rgba(120,130,200,0.16);
+      --fg-07: rgba(120,130,200,0.19);
+      --fg-08: rgba(120,130,200,0.22);
+      --fg-10: rgba(120,130,200,0.27);
+      --fg-12: rgba(120,130,200,0.33);
+      --fg-15: rgba(120,130,200,0.40);
       --shadow-rgb: 0,0,0;
-      --card-glow: 0 4px 20px rgba(0,0,0,.35);
-      --glass-blur: 10px;
+      --card-glow: 0 4px 24px rgba(0,0,10,.55), 0 1px 0 rgba(120,130,200,.08) inset;
+      --glass-blur: 12px;
+      --sidebar-active-bg: linear-gradient(90deg, rgba(129,140,248,.18) 0%, rgba(129,140,248,.06) 100%);
+      --sidebar-active-border: rgba(129,140,248,.5);
       color-scheme: dark;
     }
     :root[data-theme="light"] {
-      --bg: #EEF1F7;
+      /* Warm purple-tinted light — glassmorphism inspired */
+      --bg: #ECEEFF;
       --bg-sidebar: #FFFFFF;
       --surface: #FFFFFF;
-      --surface-hi: #FFFFFF;
-      --text-bright: #0F1B33;
-      --text: #1A2840;
-      --text-hd: #2A3A55;
-      --text-2: #3D4E68;
-      --text-3: #5B6E8C;
-      --text-muted: #6B7E9E;
-      --text-4: #7A8AA8;
-      --text-5: #8895AA;
-      --text-dim: #94A2B8;
-      --text-dimmer: #A8B4C8;
-      --text-faint: #C4CEDC;
-      --fg-rgb: 15,27,51;
-      --fg-01: rgba(15,27,51,0.015);
-      --fg-02: rgba(15,27,51,0.025);
-      --fg-03: rgba(15,27,51,0.035);
-      --fg-04: rgba(15,27,51,0.05);
-      --fg-05: rgba(15,27,51,0.06);
-      --fg-06: rgba(15,27,51,0.07);
-      --fg-07: rgba(15,27,51,0.085);
-      --fg-08: rgba(15,27,51,0.10);
-      --fg-10: rgba(15,27,51,0.13);
-      --fg-12: rgba(15,27,51,0.16);
-      --fg-15: rgba(15,27,51,0.20);
-      --shadow-rgb: 100,116,150;
-      --card-glow: 0 2px 8px rgba(100,116,150,.12);
-      --glass-blur: 0px;
+      --surface-hi: #F4F5FF;
+      --text-bright: #0D0F2E;
+      --text: #131530;
+      --text-hd: #1E2248;
+      --text-2: #313560;
+      --text-3: #4B5078;
+      --text-muted: #626890;
+      --text-4: #7880A4;
+      --text-5: #9298B8;
+      --text-dim: #AAB0CC;
+      --text-dimmer: #C2C8E0;
+      --text-faint: #D8DCF0;
+      --fg-rgb: 80,80,160;
+      --fg-01: rgba(80,80,160,0.025);
+      --fg-02: rgba(80,80,160,0.04);
+      --fg-03: rgba(80,80,160,0.055);
+      --fg-04: rgba(80,80,160,0.07);
+      --fg-05: rgba(80,80,160,0.085);
+      --fg-06: rgba(80,80,160,0.10);
+      --fg-07: rgba(80,80,160,0.12);
+      --fg-08: rgba(80,80,160,0.14);
+      --fg-10: rgba(80,80,160,0.18);
+      --fg-12: rgba(80,80,160,0.22);
+      --fg-15: rgba(80,80,160,0.28);
+      --shadow-rgb: 80,80,160;
+      --card-glow: 0 2px 12px rgba(80,80,160,.10), 0 1px 0 rgba(255,255,255,0.9) inset;
+      --glass-blur: 20px;
+      --sidebar-active-bg: linear-gradient(90deg, rgba(129,140,248,.12) 0%, rgba(129,140,248,.04) 100%);
+      --sidebar-active-border: rgba(129,140,248,.4);
       color-scheme: light;
+    }
+    /* Light theme card glass effect */
+    :root[data-theme="light"] .card-glass {
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
     }
   </style>
 </head>
@@ -303,11 +315,11 @@ const getUnitLabel=u=>({hour:"Giờ",day:"Ngày",month:"Tháng"}[u]);
 function getBucket(iso,unit){const d=new Date(iso);if(unit==="hour")return`${pad(d.getHours())}h`;if(unit==="day")return`${pad(d.getDate())}/${pad(d.getMonth()+1)}`;return`T${pad(d.getMonth()+1)}`;}
 function genBuckets(s,e,unit){const r=[],seen=new Set(),cur=new Date(s);while(cur<=e&&r.length<48){const k=getBucket(cur.toISOString(),unit);if(!seen.has(k)){seen.add(k);r.push(k);}if(unit==="hour")cur.setHours(cur.getHours()+1);else if(unit==="day")cur.setDate(cur.getDate()+1);else cur.setMonth(cur.getMonth()+1);}return r;}
 
-function Donut({pct,color,size=56}){const r=20,c=28,ci=2*Math.PI*r,d=ci*pct/100;const gid="dnt"+color.replace(/[^a-z0-9]/gi,"");return(<svg width={size} height={size} viewBox="0 0 56 56"><defs><linearGradient id={gid} x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor={color}/><stop offset="100%" stopColor={color} stopOpacity=".45"/></linearGradient></defs><circle cx={c} cy={c} r={r} fill="none" stroke="var(--fg-06)" strokeWidth={6}/><circle cx={c} cy={c} r={r} fill="none" stroke={`url(#${gid})`} strokeWidth={6} strokeDasharray={`${d} ${ci-d}`} strokeLinecap="round" transform="rotate(-90 28 28)" style={{transition:"stroke-dasharray .7s ease",filter:`drop-shadow(0 0 4px ${color}88)`}}/></svg>);}
-function Sparkline({data,color,fill}){if(!data||data.length<2)return<div style={{width:96,height:38}}/>;const vals=data.map(d=>d.v),mn=Math.min(...vals),mx=Math.max(...vals),rng=mx-mn||1;const W=96,H=38,pad=4;const xs=i=>i/(vals.length-1)*W,ys=v=>H-pad-(v-mn)/rng*(H-pad*2);const pts=vals.map((v,i)=>`${xs(i)},${ys(v)}`).join(" ");const gid="spk"+color.replace(/[^a-z0-9]/gi,"")+(fill?"f":"");const lx=xs(vals.length-1),ly=ys(vals[vals.length-1]);const area=`${pts} ${W},${H} 0,${H}`;return(<svg width={W} height={H} style={{overflow:"visible"}}><defs><linearGradient id={gid} x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor={color} stopOpacity={fill?.55:0}/><stop offset="100%" stopColor={color} stopOpacity="0"/></linearGradient></defs>{fill&&<polygon points={area} fill={`url(#${gid})`}/>}<polyline points={pts} fill="none" stroke={color} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/><circle cx={lx} cy={ly} r="3.5" fill={color}/><circle cx={lx} cy={ly} r="7" fill={color} opacity=".2"/></svg>);}
+function Donut({pct,color,size=56}){const r=20,c=28,ci=2*Math.PI*r,d=ci*pct/100;const gid="dnt"+color.replace(/[^a-z0-9]/gi,"");return(<svg width={size} height={size} viewBox="0 0 56 56"><defs><linearGradient id={gid} x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor={color}/><stop offset="100%" stopColor={color} stopOpacity=".45"/></linearGradient></defs><circle cx={c} cy={c} r={r} fill="none" stroke="var(--fg-06)" strokeWidth={6}/><circle cx={c} cy={c} r={r} fill="none" stroke={`url(#${gid})`} strokeWidth={6} strokeDasharray={`${d} ${ci-d}`} strokeLinecap="round" transform="rotate(-90 28 28)" style={{transition:"stroke-dasharray .7s ease",filter:`drop-shadow(0 0 6px ${color}AA)`}}/></svg>);}
+function Sparkline({data,color,fill}){if(!data||data.length<2)return<div style={{width:96,height:38}}/>;const vals=data.map(d=>d.v),mn=Math.min(...vals),mx=Math.max(...vals),rng=mx-mn||1;const W=96,H=38,pad=4;const xs=i=>i/(vals.length-1)*W,ys=v=>H-pad-(v-mn)/rng*(H-pad*2);const pts=vals.map((v,i)=>`${xs(i)},${ys(v)}`).join(" ");const gid="spk"+color.replace(/[^a-z0-9]/gi,"")+(fill?"f":"");const lx=xs(vals.length-1),ly=ys(vals[vals.length-1]);const area=`${pts} ${W},${H} 0,${H}`;return(<svg width={W} height={H} style={{overflow:"visible"}}><defs><linearGradient id={gid} x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor={color} stopOpacity={fill?.55:0}/><stop offset="100%" stopColor={color} stopOpacity="0"/></linearGradient></defs>{fill&&<polygon points={area} fill={`url(#${gid})`}/>}<polyline points={pts} fill="none" stroke={color} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/><circle cx={lx} cy={ly} r="3.5" fill={color}/><circle cx={lx} cy={ly} r="8" fill={color} opacity=".25"/></svg>);}
 
 // ── Tooltip định nghĩa ──────────────────────────────────────
-function Tip({text,children,w=220}){const[show,setShow]=useState(false);const[pos,setPos]=useState({x:0,y:0});const ref=useRef(null);const handleEnter=e=>{const r=ref.current?.getBoundingClientRect();if(r)setPos({x:r.left+r.width/2,y:r.top});setShow(true);};return(<span ref={ref} onMouseEnter={handleEnter} onMouseLeave={()=>setShow(false)} style={{position:"relative",cursor:"help"}}>{children}{show&&<div style={{position:"fixed",left:Math.min(pos.x-w/2,window.innerWidth-w-12),top:pos.y-8,transform:"translateY(-100%)",zIndex:9999,background:"#1C1C2E",border:"1px solid rgba(167,139,250,.3)",borderRadius:10,padding:"9px 13px",maxWidth:w,fontSize:11,color:"#D4D4E0",lineHeight:1.5,boxShadow:"0 8px 32px rgba(0,0,0,.5)",pointerEvents:"none",animation:"fadeUp .15s ease"}}><div style={{fontSize:9,color:"#A78BFA",fontWeight:700,textTransform:"uppercase",letterSpacing:"1px",marginBottom:4}}>Định nghĩa</div>{text}</div>}</span>);}
+function Tip({text,children,w=220}){const[show,setShow]=useState(false);const[pos,setPos]=useState({x:0,y:0});const ref=useRef(null);const handleEnter=e=>{const r=ref.current?.getBoundingClientRect();if(r)setPos({x:r.left+r.width/2,y:r.top});setShow(true);};return(<span ref={ref} onMouseEnter={handleEnter} onMouseLeave={()=>setShow(false)} style={{position:"relative",cursor:"help"}}>{children}{show&&<div style={{position:"fixed",left:Math.min(pos.x-w/2,window.innerWidth-w-12),top:pos.y-8,transform:"translateY(-100%)",zIndex:9999,background:"#13142A",border:"1px solid rgba(129,140,248,.35)",borderRadius:10,padding:"9px 13px",maxWidth:w,fontSize:11,color:"#D4D4E0",lineHeight:1.5,boxShadow:"0 8px 32px rgba(0,0,0,.5)",pointerEvents:"none",animation:"fadeUp .15s ease"}}><div style={{fontSize:9,color:"#A78BFA",fontWeight:700,textTransform:"uppercase",letterSpacing:"1px",marginBottom:4}}>Định nghĩa</div>{text}</div>}</span>);}
 
 // ── Count-up animation hook ──────────────────────────────────
 function useCountUp(target,duration=800){const[val,setVal]=useState(0);const prev=useRef(0);useEffect(()=>{if(target===prev.current)return;const start=prev.current,diff=target-start,startTime=performance.now();const step=now=>{const p=Math.min((now-startTime)/duration,1);const ease=1-Math.pow(1-p,3);setVal(Math.round(start+diff*ease));if(p<1)requestAnimationFrame(step);else{prev.current=target;setVal(target);}};requestAnimationFrame(step);},[target]);return val;}
@@ -315,13 +327,13 @@ function useCountUp(target,duration=800){const[val,setVal]=useState(0);const pre
 // ── Skeleton loader ──────────────────────────────────────────
 function Skeleton({w="100%",h=16,radius=6}){return(<div style={{width:w,height:h,borderRadius:radius,background:"linear-gradient(90deg,var(--fg-03) 25%,var(--fg-06) 50%,var(--fg-03) 75%)",backgroundSize:"200% 100%",animation:"shimmer 1.5s infinite"}}/>);}
 function SkeletonCard(){return(<div style={{background:"var(--surface)",border:"1px solid var(--fg-06)",borderRadius:20,padding:"20px 22px"}}><div style={{display:"flex",justifyContent:"space-between",marginBottom:16}}><Skeleton w={80} h={10}/><Skeleton w={32} h={32} radius={10}/></div><Skeleton w={60} h={52} radius={8}/><div style={{marginTop:14,display:"flex",gap:8}}><Skeleton w={64} h={20} radius={10}/><Skeleton w={80} h={10} radius={4}/></div></div>);}
-function KPICard({c,d,active,clickable,isPos,i,onToggle,sparkData,cfg,C}){const num=useCountUp(c.val,900);const dSign=n=>n>=0?`↑ ${n}%`:`↓ ${Math.abs(n)}%`;return(<div onClick={onToggle} className="scale-in" style={{animationDelay:`${i*0.06}s`,position:"relative",background:`linear-gradient(160deg, ${c.color}10 0%, var(--surface) 55%)`,border:`1px solid ${active?c.color+"55":"var(--fg-08)"}`,borderRadius:20,padding:"20px 22px 18px",cursor:clickable?"pointer":"default",overflow:"hidden",transition:"all .22s ease",boxShadow:active?`0 0 0 1px ${c.color}33, 0 12px 36px rgba(0,0,0,.45)`:"0 4px 20px rgba(0,0,0,.35)"}} onMouseEnter={e=>{if(!clickable)return;e.currentTarget.style.transform="translateY(-3px)";e.currentTarget.style.boxShadow=`0 0 0 1px ${c.color}44, 0 16px 40px rgba(0,0,0,.5)`;}} onMouseLeave={e=>{if(!clickable)return;e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow=active?`0 0 0 1px ${c.color}33, 0 12px 36px rgba(0,0,0,.45)`:"0 4px 20px rgba(0,0,0,.35)";}}>
-  <div aria-hidden style={{position:"absolute",top:-40,right:-40,width:120,height:120,borderRadius:"50%",background:`radial-gradient(circle, ${c.color}18, transparent 70%)`,pointerEvents:"none"}}/>
+function KPICard({c,d,active,clickable,isPos,i,onToggle,sparkData,cfg,C}){const num=useCountUp(c.val,900);const dSign=n=>n>=0?`↑ ${n}%`:`↓ ${Math.abs(n)}%`;return(<div onClick={onToggle} className="scale-in" style={{animationDelay:`${i*0.06}s`,position:"relative",background:`linear-gradient(135deg, ${c.color}16 0%, var(--surface) 50%)`,border:`1px solid ${active?c.color+"55":"var(--fg-08)"}`,borderRadius:20,padding:"16px 18px 14px",cursor:clickable?"pointer":"default",overflow:"hidden",transition:"all .22s ease",boxShadow:active?`0 0 0 1px ${c.color}55, 0 0 30px ${c.color}22, 0 12px 36px rgba(0,0,0,.45)`:"var(--card-glow)"}} onMouseEnter={e=>{if(!clickable)return;e.currentTarget.style.transform="translateY(-3px)";e.currentTarget.style.boxShadow=`0 0 0 1px ${c.color}44, 0 16px 40px rgba(0,0,0,.5)`;}} onMouseLeave={e=>{if(!clickable)return;e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow=active?`0 0 0 1px ${c.color}33, 0 12px 36px rgba(0,0,0,.45)`:"0 4px 20px rgba(0,0,0,.35)";}}>
+  <div aria-hidden style={{position:"absolute",top:-50,right:-50,width:150,height:150,borderRadius:"50%",background:`radial-gradient(circle, ${c.color}22, transparent 65%)`,pointerEvents:"none"}}/>
   <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",marginBottom:16}}>
     <Tip text={c.tip} w={200}><div style={{fontSize:10,fontWeight:700,color:active?c.color:"var(--text-4)",textTransform:"uppercase",letterSpacing:"1.2px",lineHeight:1.4,borderBottom:"1px dashed var(--fg-08)",paddingBottom:1}}>{c.label}</div></Tip>
     <div style={{width:32,height:32,borderRadius:10,background:`${c.color}18`,border:`1px solid ${c.color}28`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,flexShrink:0}}>{c.icon}</div>
   </div>
-  <div style={{fontSize:58,fontWeight:900,color:"#FFFFFF",lineHeight:.9,letterSpacing:"-2px",marginBottom:14,fontVariantNumeric:"tabular-nums"}}>{num}</div>
+  <div style={{fontSize:42,fontWeight:800,color:"#FFFFFF",lineHeight:.95,letterSpacing:"-1.5px",marginBottom:12,fontVariantNumeric:"tabular-nums"}}>{num}</div>
   <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
     <div style={{display:"flex",alignItems:"center",gap:6}}>
       <span style={{display:"inline-flex",alignItems:"center",gap:3,fontSize:11,color:isPos?"#34D399":"#FB7185",fontWeight:700,background:isPos?"rgba(52,211,153,.12)":"rgba(251,113,133,.12)",padding:"3px 8px",borderRadius:20,border:`1px solid ${isPos?"rgba(52,211,153,.2)":"rgba(251,113,133,.2)"}`}}>{dSign(d)}</span>
@@ -330,11 +342,11 @@ function KPICard({c,d,active,clickable,isPos,i,onToggle,sparkData,cfg,C}){const 
     <Sparkline data={sparkData(c.loai)} color={c.color} fill/>
   </div>
 </div>);}
-function StatusCard({g,cnt,pct,active,total,tip,i,onToggle}){const num=useCountUp(cnt,800);const pctN=useCountUp(pct,800);return(<div onClick={onToggle} className="scale-in" style={{animationDelay:`${i*0.06}s`,position:"relative",background:`linear-gradient(160deg, ${g.color}0C 0%, var(--surface) 60%)`,border:`1px solid ${active?g.color+"55":"var(--fg-07)"}`,borderRadius:20,padding:"20px 22px",cursor:"pointer",overflow:"hidden",transition:"all .22s ease",boxShadow:active?`0 0 0 1px ${g.color}33, 0 12px 36px rgba(0,0,0,.45)`:"0 4px 20px rgba(0,0,0,.3)"}} onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.boxShadow=`0 0 0 1px ${g.color}44, 0 16px 40px rgba(0,0,0,.5)`;}} onMouseLeave={e=>{e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow=active?`0 0 0 1px ${g.color}33, 0 12px 36px rgba(0,0,0,.45)`:"0 4px 20px rgba(0,0,0,.3)";}}>
-  <div aria-hidden style={{position:"absolute",bottom:-30,right:-30,width:100,height:100,borderRadius:"50%",background:`radial-gradient(circle, ${g.color}14, transparent 70%)`,pointerEvents:"none"}}/>
+function StatusCard({g,cnt,pct,active,total,tip,i,onToggle}){const num=useCountUp(cnt,800);const pctN=useCountUp(pct,800);return(<div onClick={onToggle} className="scale-in" style={{animationDelay:`${i*0.06}s`,position:"relative",background:`linear-gradient(135deg, ${g.color}14 0%, var(--surface) 55%)`,border:`1px solid ${active?g.color+"55":"var(--fg-07)"}`,borderRadius:20,padding:"16px 18px",cursor:"pointer",overflow:"hidden",transition:"all .22s ease",boxShadow:active?`0 0 0 1px ${g.color}55, 0 0 24px ${g.color}20, 0 12px 36px rgba(0,0,0,.45)`:"var(--card-glow)"}} onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-2px)";e.currentTarget.style.boxShadow=`0 0 0 1px ${g.color}44, 0 16px 40px rgba(0,0,0,.5)`;}} onMouseLeave={e=>{e.currentTarget.style.transform="none";e.currentTarget.style.boxShadow=active?`0 0 0 1px ${g.color}33, 0 12px 36px rgba(0,0,0,.45)`:"0 4px 20px rgba(0,0,0,.3)";}}>
+  <div aria-hidden style={{position:"absolute",bottom:-35,right:-35,width:120,height:120,borderRadius:"50%",background:`radial-gradient(circle, ${g.color}20, transparent 65%)`,pointerEvents:"none"}}/>
   <Tip text={tip} w={220}><div style={{fontSize:10,fontWeight:700,color:active?g.color:"var(--text-5)",textTransform:"uppercase",letterSpacing:"1.2px",marginBottom:16,borderBottom:"1px dashed var(--fg-07)",paddingBottom:2,display:"inline-block",cursor:"help"}}>{g.label}</div></Tip>
   <div style={{display:"flex",alignItems:"flex-end",justifyContent:"space-between",marginBottom:12}}>
-    <div style={{fontSize:52,fontWeight:900,color:"#FFFFFF",lineHeight:.9,letterSpacing:"-2px",fontVariantNumeric:"tabular-nums"}}>{num}</div>
+    <div style={{fontSize:36,fontWeight:800,color:"#FFFFFF",lineHeight:.9,letterSpacing:"-2px",fontVariantNumeric:"tabular-nums"}}>{num}</div>
     <Donut pct={pct} color={g.color} size={62}/>
   </div>
   <div style={{display:"flex",alignItems:"center",gap:8}}>
@@ -343,8 +355,8 @@ function StatusCard({g,cnt,pct,active,total,tip,i,onToggle}){const num=useCountU
   </div>
 </div>);}
 function Bar3({done,ip,bl,total,clrs,h=3}){if(!total)return null;return(<div style={{height:Math.max(h,6),background:"var(--fg-05)",borderRadius:99,display:"flex",overflow:"hidden",gap:1}}><div style={{width:`${done/total*100}%`,background:`linear-gradient(90deg, ${clrs[0]}, ${clrs[0]}CC)`,transition:"width .5s",borderRadius:99}}/><div style={{width:`${ip/total*100}%`,background:`linear-gradient(90deg, ${clrs[1]}, ${clrs[1]}CC)`,transition:"width .5s",borderRadius:99}}/><div style={{width:`${bl/total*100}%`,background:`linear-gradient(90deg, ${clrs[2]}, ${clrs[2]}CC)`,transition:"width .5s",borderRadius:99}}/></div>);}
-function STitle({title,accent,note}){return(<div style={{marginBottom:16}}><div style={{display:"flex",alignItems:"center",gap:10,marginBottom:note?4:0}}><div style={{width:4,height:18,background:`linear-gradient(180deg,${accent},${accent}44)`,borderRadius:99,boxShadow:`0 0 12px ${accent}66`}}/><span style={{fontWeight:800,fontSize:13,color:"var(--text-hd)",letterSpacing:"0.6px",textTransform:"uppercase"}}>{title}</span></div>{note&&<div style={{paddingLeft:14,fontSize:10,color:"var(--text-dimmer)"}}>{note}</div>}</div>);}
-function Card({children,s={},onClick,active,accent="#A78BFA"}){const[hov,setHov]=useState(false);return(<div onClick={onClick} onMouseEnter={()=>onClick&&setHov(true)} onMouseLeave={()=>setHov(false)} style={{background:active?`linear-gradient(150deg,${accent}12,var(--surface))`:"var(--surface)",border:active?`1px solid ${accent}44`:"1px solid var(--fg-06)",borderRadius:18,padding:"18px 20px",cursor:onClick?"pointer":"default",transition:"all .22s ease",boxShadow:hov?"0 10px 34px rgba(var(--shadow-rgb),.28)":"var(--card-glow)",transform:hov?"translateY(-2px)":"none",...s}}>{children}</div>);}
+function STitle({title,accent,note}){return(<div style={{marginBottom:14}}><div style={{display:"flex",alignItems:"center",gap:10,marginBottom:note?4:0}}><div style={{width:3,height:20,background:`linear-gradient(180deg,${accent},${accent}55)`,borderRadius:99,boxShadow:`0 0 14px ${accent}88`}}/><span style={{fontWeight:700,fontSize:11,color:"var(--text-hd)",letterSpacing:"1px",textTransform:"uppercase"}}>{title}</span></div>{note&&<div style={{paddingLeft:14,fontSize:10,color:"var(--text-dimmer)"}}>{note}</div>}</div>);}
+function Card({children,s={},onClick,active,accent="#A78BFA"}){const[hov,setHov]=useState(false);return(<div onClick={onClick} onMouseEnter={()=>onClick&&setHov(true)} onMouseLeave={()=>setHov(false)} style={{background:active?`linear-gradient(150deg,${accent}14,var(--surface))`:"var(--surface)",border:active?`1px solid ${accent}55`:`1px solid var(--fg-${hov&&onClick?"10":"07"})`,borderRadius:16,padding:"18px 20px",backdropFilter:"blur(var(--glass-blur))",WebkitBackdropFilter:"blur(var(--glass-blur))",cursor:onClick?"pointer":"default",transition:"all .22s ease",boxShadow:hov?"0 10px 34px rgba(var(--shadow-rgb),.28)":"var(--card-glow)",transform:hov?"translateY(-2px)":"none",...s}}>{children}</div>);}
 const TT=({active,payload,label,unit})=>{if(!active||!payload?.length)return null;return(<div style={{background:"var(--surface-hi)",border:"1px solid var(--fg-12)",borderRadius:10,padding:"10px 14px",minWidth:150,boxShadow:"0 8px 24px rgba(var(--shadow-rgb),.5)"}}><div style={{fontSize:10,color:"var(--text-dim)",fontWeight:600,marginBottom:6}}>{getUnitLabel(unit)}: <span style={{color:"#818CF8"}}>{label}</span></div>{payload.map((p,i)=><div key={i} style={{display:"flex",alignItems:"center",justifyContent:"space-between",gap:12,marginBottom:3}}><div style={{display:"flex",alignItems:"center",gap:5}}><div style={{width:7,height:7,borderRadius:"50%",background:p.color}}/><span style={{fontSize:11,color:"var(--text-2)"}}>{p.name}</span></div><span style={{fontWeight:700,fontSize:12,color:p.color}}>{p.value}</span></div>)}<div style={{marginTop:5,paddingTop:5,borderTop:"1px solid var(--fg-06)",fontSize:10,color:"var(--text-dim)"}}>Tổng: <b style={{color:"var(--text)"}}>{payload.reduce((s,p)=>s+(p.value||0),0)}</b></div></div>);};
 function FilterSection({title,icon,children,defaultOpen=false,badge=0,accent}){const[open,setOpen]=useState(defaultOpen);return(<div style={{marginBottom:3}}><div onClick={()=>setOpen(o=>!o)} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"7px 10px",borderRadius:8,cursor:"pointer",userSelect:"none",background:open?"var(--fg-04)":"transparent"}}><div style={{display:"flex",alignItems:"center",gap:7}}><span style={{fontSize:12}}>{icon}</span><span style={{fontSize:11,fontWeight:600,color:open?"var(--text-hd)":"var(--text-5)"}}>{title}</span></div><div style={{display:"flex",alignItems:"center",gap:5}}>{badge>0&&<span style={{background:`${accent}30`,color:accent,fontSize:9,fontWeight:700,padding:"1px 5px",borderRadius:8}}>{badge}</span>}<span style={{fontSize:10,color:"var(--text-dimmer)",display:"inline-block",transform:open?"rotate(180deg)":"rotate(0deg)",transition:"transform .2s"}}>▾</span></div></div>{open&&<div style={{padding:"3px 4px 6px",display:"flex",flexDirection:"column",gap:1}}>{children}</div>}</div>);}
 function FilterItem({label,count,active,onClick,color,accent}){return(<div onClick={onClick} style={{display:"flex",alignItems:"center",justifyContent:"space-between",padding:"6px 10px",borderRadius:8,cursor:"pointer",transition:"all .14s",background:active?`${accent}1A`:"transparent",border:`1px solid ${active?accent+"44":"transparent"}`}} onMouseEnter={e=>!active&&(e.currentTarget.style.background="var(--fg-03)")} onMouseLeave={e=>!active&&(e.currentTarget.style.background="transparent")}>
@@ -989,7 +1001,7 @@ useEffect(()=>{try{localStorage.setItem("shb_presets",JSON.stringify(presets));}
   return(
     <div id="dashboard-root" data-theme={theme} style={{display:"flex",minHeight:"100vh",background:"var(--bg)",fontFamily:FF,color:"var(--text)",transition:"background .3s ease, color .3s ease"}}>
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..900;1,14..32,300..900&display=swap');*{box-sizing:border-box;margin:0;padding:0}body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--fg-08);border-radius:99px}::-webkit-scrollbar-thumb:hover{background:var(--fg-12)}input::placeholder{color:var(--text-dimmer)}input:focus{outline:none;box-shadow:0 0 0 2px var(--fg-10)}@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}@keyframes pulseTip{0%,100%{box-shadow:0 0 0 0 rgba(167,139,250,.4)}50%{box-shadow:0 0 0 8px rgba(167,139,250,0)}}@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}@keyframes fadeIn{from{opacity:0}to{opacity:1}}@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}@keyframes pulseRed{0%,100%{opacity:1}50%{opacity:.4}}@keyframes barEnter{from{width:0!important}to{}}@keyframes scaleIn{from{transform:scale(.92);opacity:0}to{transform:scale(1);opacity:1}}@keyframes slideInRight{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}.section-animate{animation:fadeUp .35s ease both}.bar-animate{animation:barEnter .6s cubic-bezier(.4,0,.2,1) both}.scale-in{animation:scaleIn .25s ease both}.sortable{cursor:pointer;user-select:none}.sortable:hover{color:var(--text-2)!important}@media print{.no-print{display:none!important}body{background:#fff!important}}@media (max-width:1400px){.kpi-grid,.status-grid{grid-template-columns:repeat(2,1fr)!important}.workload-grid,.trend-grid,.nhom-grid{grid-template-columns:1fr!important}}[data-theme] *{transition:background-color .2s ease,border-color .2s ease,color .18s ease;transition-property:background-color,border-color,color,box-shadow}input,button,select,svg *,.recharts-wrapper *{transition:none !important}`}</style>
-      <div className="no-print" style={{width:sidebarOpen?232:50,background:"var(--bg-sidebar)",borderRight:"1px solid var(--fg-05)",position:"sticky",top:0,height:"100vh",overflowY:"auto",overflowX:"hidden",flexShrink:0,transition:"width .25s ease"}}>
+      <div className="no-print" style={{width:sidebarOpen?232:50,background:"var(--bg-sidebar)",borderRight:"1px solid var(--fg-08)",position:"sticky",top:0,height:"100vh",overflowY:"auto",overflowX:"hidden",flexShrink:0,transition:"width .25s ease"}}>
         <div style={{padding:"12px 10px",borderBottom:"1px solid var(--fg-05)"}}><div style={{display:"flex",alignItems:"center",gap:8}}><div onClick={()=>setSidebarOpen(o=>!o)} style={{width:32,height:24,cursor:"pointer",flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center"}}>{cfg.logoUrl?<img src={cfg.logoUrl} alt="logo" style={{width:28,height:28,objectFit:"contain",borderRadius:4}}/>:<div style={{fontWeight:900,fontSize:11,color:"#A78BFA",letterSpacing:1}}>CM</div>}</div>{sidebarOpen&&<><div style={{flex:1,minWidth:0}}><div style={{fontWeight:700,fontSize:11,color:"var(--text)",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{cfg.appName}</div><div style={{display:"flex",alignItems:"center",gap:4,marginTop:2}}><div style={{width:5,height:5,borderRadius:"50%",background:loading?"#A78BFA":liveData?"#34D399":"var(--text-5)",boxShadow:loading?"0 0 5px #A78BFA":liveData?"0 0 5px #34D399":"none",animation:loading?"pulse 1s infinite":"none"}}/><span style={{fontSize:9,color:loading?"#A78BFA":liveData?"#34D399":"#FBBF24"}}>{loading?"Đang tải...":liveData?cfg.liveBadge:"Chờ dữ liệu..."}</span></div></div><div onClick={()=>setSidebarOpen(false)} style={{cursor:"pointer",color:"var(--text-dimmer)",fontSize:13,padding:3}}>◀</div></>}</div></div>
         {sidebarOpen&&<div style={{padding:"10px 8px"}}>{activeCount>0&&<button onClick={clearAll} style={{width:"100%",padding:"5px",background:`${C.accent}18`,border:`1px solid ${C.accent}30`,borderRadius:8,color:C.accent,fontSize:10,cursor:"pointer",fontWeight:600,marginBottom:10}}>&#10005; {cfg.ui.clearFilter} ({activeCount})</button>}{allWorkTypes.length>1&&<FilterSection title={cfg.ui?.filterLabels?.worktype||"Loại công việc"} icon="&#9881;" badge={f.work_type.length} accent={C.accent} defaultOpen>{allWorkTypes.map(wt=><FilterItem key={wt} label={wt} count={rangeRaw.filter(d=>d.work_type===wt).length} active={f.work_type.includes(wt)} onClick={()=>toggle("work_type",wt)} accent={C.accent}/>)}</FilterSection>}<FilterSection title={cfg.ui.filterLabels.loai} icon="&#128194;" defaultOpen badge={f.loai.length} accent={C.accent}>{[["Squad",C.squad],["Du_an",C.duan],["Van_hoa",C.vanhoa]].map(([k,c])=><FilterItem key={k} label={cfg.ui.loaiNames[k]||k} count={rangeRaw.filter(d=>d.loai===k).length} active={f.loai.includes(k)} color={c} onClick={()=>toggle("loai",k)} accent={C.accent}/>)}</FilterSection><FilterSection title={cfg.ui.filterLabels.status} icon="&#128202;" defaultOpen badge={f.statusGroup.length} accent={C.accent}>{SG.map(g=><FilterItem key={g.id} label={g.label} count={rangeRaw.filter(d=>getGrp(d.status)?.id===g.id).length} active={f.statusGroup.includes(g.id)} color={g.color} onClick={()=>toggle("statusGroup",g.id)} accent={C.accent}/>)}</FilterSection><FilterSection title={cfg.ui.filterLabels.doituong} icon="&#127919;" badge={f.doi_tuong.length} accent={C.accent}>{allDT.map(dt=><FilterItem key={dt} label={dt.replace("Dự án ","").replace("Văn hóa ","")} count={rangeRaw.filter(d=>d.doi_tuong===dt).length} active={f.doi_tuong.includes(dt)} onClick={()=>toggle("doi_tuong",dt)} accent={C.accent}/>)}</FilterSection><FilterSection title={cfg.ui.filterLabels.nhom} icon="&#128101;" badge={f.nhom.length} accent={C.accent}>{allNhomK.map(n=><FilterItem key={n} label={getNhomLabel(n)} count={rangeRaw.filter(d=>d.nhom===n).length} active={f.nhom.includes(n)} onClick={()=>toggle("nhom",n)} accent={C.accent}/>)}</FilterSection><FilterSection title={cfg.ui.filterLabels.hangmuc||"Hạng mục"} icon="&#128203;" badge={f.hang_muc.length} accent={C.accent}>{allHangMuc.map(h=><FilterItem key={h} label={h} count={rangeRaw.filter(d=>d.hang_muc===h).length} active={f.hang_muc.includes(h)} onClick={()=>toggle("hang_muc",h)} accent={C.accent}/>)}</FilterSection><FilterSection title={cfg.ui.filterLabels.hmchuan||"Hạng mục chuẩn"} icon="&#9989;" badge={f.hang_muc_chuan.length} accent={C.accent}>{allHangMucChuan.map(h=><FilterItem key={h} label={cfg.hmChuanLabels?.[h]||h} count={rangeRaw.filter(d=>d.hang_muc_chuan===h).length} active={f.hang_muc_chuan.includes(h)} onClick={()=>toggle("hang_muc_chuan",h)} accent={C.accent}/>)}</FilterSection><FilterSection title={cfg.ui.filterLabels.assignee} icon="&#128100;" badge={f.assignee.length} accent={C.accent}>{dynamicAssignees.map((a,i)=><FilterItem key={a} label={a} count={rangeRaw.filter(d=>d.assignee===a).length} active={f.assignee.includes(a)} color={AVT_COLORS[i%AVT_COLORS.length]} onClick={()=>toggle("assignee",a)} accent={C.accent}/>)}</FilterSection></div>}
         {!sidebarOpen&&<div style={{display:"flex",flexDirection:"column",alignItems:"center",padding:"10px 0",gap:6}}><div onClick={()=>setSidebarOpen(true)} style={{cursor:"pointer",color:"var(--text-dim)",fontSize:14,padding:6}}>▶</div>{activeCount>0&&<div style={{width:7,height:7,borderRadius:"50%",background:C.accent}}/>}</div>}
