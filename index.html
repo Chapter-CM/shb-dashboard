@@ -707,7 +707,7 @@ useEffect(()=>{try{localStorage.setItem("shb_presets",JSON.stringify(presets));}
   };
   const rangeRaw=ACTIVE_DATA.filter(inRange);
   const prevRaw=ACTIVE_DATA.filter(d=>{const dt=dateField==="due"?d.due:dateField==="created"?(d.created||""):d.updated;return dt>=fmt(prevStart)&&dt<=fmt(prevEnd)+"T23:59:59";});
-  const getGrp=status=>getGroupForStatus(status,SG);
+  function getGrp(status){return getGroupForStatus(status,SG);}
 
   const getGrpCached=status=>getGrp(status);
   const data=useMemo(()=>rangeRaw.filter(d=>{
