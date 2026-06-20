@@ -15,11 +15,11 @@
   <style id="theme-vars">
     /* ============ THEME TOKENS v2 — inspired by CRM Dark + Glassmorphism ============ */
     :root, :root[data-theme="dark"] {
-      /* Deep navy dark — richer than pure black, like template 2 CRM */
+      /* Deep navy dark — richer than pure black, like CRM template */
       --bg: #080B14;
       --bg-sidebar: #0A0D1A;
       --surface: #0F1220;
-      --surface-hi: #161928;
+      --surface-hi: #161A2B;
       --text-bright: #FFFFFF;
       --text: #E8ECFF;
       --text-hd: #CBD1F0;
@@ -46,51 +46,47 @@
       --shadow-rgb: 0,0,0;
       --card-glow: 0 6px 28px rgba(0,0,20,.6), 0 1px 0 rgba(120,130,200,.10) inset;
       --glass-blur: 12px;
+      --sidebar-grad: linear-gradient(180deg, #0A0D1A 0%, #0B0E1C 100%);
       --sidebar-active-bg: linear-gradient(90deg, rgba(129,140,248,.18) 0%, rgba(129,140,248,.06) 100%);
       --sidebar-active-border: rgba(129,140,248,.5);
       color-scheme: dark;
     }
     :root[data-theme="light"] {
-      /* Warm purple-tinted light — glassmorphism inspired */
-      --bg: #E8EAFF;
+      /* Clean high-contrast light — Stripe / Linear inspired (no muddy glass) */
+      --bg: #EDF0F7;
       --bg-sidebar: #FFFFFF;
       --surface: #FFFFFF;
-      --surface-hi: #F4F5FF;
-      --text-bright: #0D0F2E;
-      --text: #131530;
-      --text-hd: #1E2248;
-      --text-2: #313560;
-      --text-3: #4B5078;
-      --text-muted: #626890;
-      --text-4: #7880A4;
-      --text-5: #9298B8;
-      --text-dim: #AAB0CC;
-      --text-dimmer: #C2C8E0;
-      --text-faint: #D8DCF0;
-      --fg-rgb: 80,80,160;
-      --fg-01: rgba(80,80,160,0.025);
-      --fg-02: rgba(80,80,160,0.04);
-      --fg-03: rgba(80,80,160,0.055);
-      --fg-04: rgba(80,80,160,0.07);
-      --fg-05: rgba(80,80,160,0.085);
-      --fg-06: rgba(80,80,160,0.10);
-      --fg-07: rgba(80,80,160,0.12);
-      --fg-08: rgba(80,80,160,0.14);
-      --fg-10: rgba(80,80,160,0.18);
-      --fg-12: rgba(80,80,160,0.22);
-      --fg-15: rgba(80,80,160,0.28);
-      --shadow-rgb: 80,80,160;
-      --card-glow: 0 4px 20px rgba(80,80,160,.14), 0 1px 0 rgba(255,255,255,1.0) inset;
-      --glass-blur: 20px;
-      --sidebar-active-bg: linear-gradient(90deg, rgba(129,140,248,.12) 0%, rgba(129,140,248,.04) 100%);
-      --sidebar-active-border: rgba(129,140,248,.4);
+      --surface-hi: #FFFFFF;
+      --text-bright: #0B1220;
+      --text: #16213A;
+      --text-hd: #233049;
+      --text-2: #36425C;
+      --text-3: #4E5A75;
+      --text-muted: #66738F;
+      --text-4: #7B88A4;
+      --text-5: #94A0BC;
+      --text-dim: #AAB5CE;
+      --text-dimmer: #BFC8DC;
+      --text-faint: #D7DEEC;
+      --fg-rgb: 30,41,66;
+      --fg-01: rgba(28,40,68,0.018);
+      --fg-02: rgba(28,40,68,0.03);
+      --fg-03: rgba(28,40,68,0.045);
+      --fg-04: rgba(28,40,68,0.06);
+      --fg-05: rgba(28,40,68,0.075);
+      --fg-06: rgba(28,40,68,0.095);
+      --fg-07: rgba(28,40,68,0.115);
+      --fg-08: rgba(28,40,68,0.14);
+      --fg-10: rgba(28,40,68,0.18);
+      --fg-12: rgba(28,40,68,0.24);
+      --fg-15: rgba(28,40,68,0.32);
+      --shadow-rgb: 28,40,68;
+      --card-glow: 0 1px 2px rgba(16,24,40,.05), 0 8px 20px -6px rgba(16,24,40,.12);
+      --glass-blur: 0px;
+      --sidebar-grad: #FFFFFF;
+      --sidebar-active-bg: linear-gradient(90deg, rgba(99,102,241,.10) 0%, rgba(99,102,241,.03) 100%);
+      --sidebar-active-border: rgba(99,102,241,.4);
       color-scheme: light;
-    }
-    /* Light theme card glass effect */
-    :root[data-theme="light"] .card-glass {
-      background: rgba(255,255,255,0.7);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
     }
   </style>
 </head>
@@ -622,6 +618,61 @@ function exportToExcel(rows,filename){
   const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=filename;a.click();
 }
 
+
+// ── Command Palette (Ctrl+K / ⌘K) ───────────────────────────────
+function CmdPalette({open,onClose,commands,accent}){
+  const[q,setQ]=useState("");
+  const[sel,setSel]=useState(0);
+  const inRef=useRef(null);
+  useEffect(()=>{if(open){setQ("");setSel(0);setTimeout(()=>{if(inRef.current)inRef.current.focus();},30);}},[open]);
+  useEffect(()=>{setSel(0);},[q]);
+  const list=(()=>{const s=q.trim().toLowerCase();if(!s)return commands.slice(0,80);return commands.filter(c=>(c.label+" "+(c.group||"")+" "+(c.hint||"")).toLowerCase().includes(s)).slice(0,80);})();
+  if(!open)return null;
+  const onKey=e=>{
+    if(e.key==="ArrowDown"){e.preventDefault();setSel(s=>Math.min(s+1,list.length-1));}
+    else if(e.key==="ArrowUp"){e.preventDefault();setSel(s=>Math.max(s-1,0));}
+    else if(e.key==="Enter"){e.preventDefault();const cc=list[sel];if(cc){cc.run();onClose();}}
+    else if(e.key==="Escape"){e.preventDefault();onClose();}
+  };
+  return(<div onMouseDown={onClose} style={{position:"fixed",inset:0,zIndex:600,background:"rgba(5,7,16,.55)",backdropFilter:"blur(4px)",WebkitBackdropFilter:"blur(4px)",display:"flex",alignItems:"flex-start",justifyContent:"center",paddingTop:"11vh"}}>
+    <div onMouseDown={e=>e.stopPropagation()} onKeyDown={onKey} style={{width:"min(640px,92vw)",background:"var(--surface-hi)",border:`1px solid ${accent}40`,borderRadius:16,boxShadow:"0 30px 90px rgba(0,0,0,.55)",overflow:"hidden",animation:"cmdIn .18s cubic-bezier(.22,1,.36,1)"}}>
+      <div style={{display:"flex",alignItems:"center",gap:10,padding:"14px 18px",borderBottom:"1px solid var(--fg-06)"}}>
+        <span style={{fontSize:15,color:accent,fontWeight:700}}>⌘</span>
+        <input ref={inRef} value={q} onChange={e=>setQ(e.target.value)} placeholder="Tìm lệnh, bộ lọc, người, trạng thái..." style={{flex:1,background:"transparent",border:"none",outline:"none",color:"var(--text)",fontSize:15,fontFamily:FF}}/>
+        <span style={{fontSize:9,color:"var(--text-4)",border:"1px solid var(--fg-08)",borderRadius:5,padding:"2px 6px",fontWeight:600}}>ESC</span>
+      </div>
+      <div style={{maxHeight:"52vh",overflowY:"auto",padding:6}}>
+        {list.length===0&&<div style={{padding:"34px",textAlign:"center",color:"var(--text-4)",fontSize:12}}>Không tìm thấy lệnh phù hợp</div>}
+        {list.map((cc,i)=>(<div key={i} onMouseEnter={()=>setSel(i)} onMouseDown={e=>{e.preventDefault();cc.run();onClose();}} style={{display:"flex",alignItems:"center",gap:12,padding:"9px 12px",borderRadius:10,cursor:"pointer",background:sel===i?`${accent}1F`:"transparent",border:sel===i?`1px solid ${accent}40`:"1px solid transparent"}}>
+          <span style={{fontSize:14,width:22,textAlign:"center"}}>{cc.icon}</span>
+          <div style={{flex:1,minWidth:0}}>
+            <div style={{fontSize:13,color:"var(--text)",fontWeight:500,whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{cc.label}</div>
+            {cc.hint&&<div style={{fontSize:10,color:"var(--text-4)"}}>{cc.hint}</div>}
+          </div>
+          {cc.group&&<span style={{fontSize:9,color:"var(--text-5)",textTransform:"uppercase",letterSpacing:".5px",background:"var(--fg-04)",padding:"2px 7px",borderRadius:20,whiteSpace:"nowrap",flexShrink:0}}>{cc.group}</span>}
+        </div>))}
+      </div>
+      <div style={{display:"flex",gap:16,padding:"8px 16px",borderTop:"1px solid var(--fg-06)",fontSize:10,color:"var(--text-5)"}}>
+        <span>↑↓ di chuyển</span><span>↵ chọn</span><span>esc đóng</span>
+      </div>
+    </div>
+  </div>);
+}
+
+// ── Toast notifications ─────────────────────────────────────────
+function ToastHost({toasts}){
+  return(<div style={{position:"fixed",bottom:20,right:20,zIndex:700,display:"flex",flexDirection:"column",gap:8,pointerEvents:"none"}}>
+    {toasts.map(t=>{
+      const col=t.type==="success"?"#34D399":t.type==="warn"?"#FBBF24":t.type==="error"?"#FB7185":"#818CF8";
+      const ic=t.type==="success"?"✓":t.type==="warn"?"⚠":t.type==="error"?"✕":"ℹ";
+      return(<div key={t.id} style={{display:"flex",alignItems:"center",gap:10,background:"var(--surface-hi)",border:`1px solid ${col}55`,borderLeft:`3px solid ${col}`,borderRadius:10,padding:"10px 14px",minWidth:240,maxWidth:380,boxShadow:"0 14px 36px rgba(0,0,0,.35)",animation:"toastIn .28s cubic-bezier(.22,1,.36,1) both",pointerEvents:"auto"}}>
+        <span style={{fontSize:14,color:col,fontWeight:800}}>{ic}</span>
+        <span style={{fontSize:12,color:"var(--text-2)",lineHeight:1.4}}>{t.msg}</span>
+      </div>);
+    })}
+  </div>);
+}
+
 const DashboardApp = function Dashboard(){
   const[cfg,setCfg]=useState(()=>{try{const s=localStorage.getItem("cm_cfg_v10");if(!s)return DEFAULT_CONFIG;const saved=JSON.parse(s);return{...saved,sections:{...DEFAULT_CONFIG.sections,...(saved.sections||{})}};}catch{return DEFAULT_CONFIG;}});
   const[configSaving,setConfigSaving]=useState(false);
@@ -665,6 +716,9 @@ const DashboardApp = function Dashboard(){
   // (Bo Jira sync button — Power Automate lo viec keo Jira -> Excel)
   const[syncError,setSyncError]=useState(null);
   const[debugInfo,setDebugInfo]=useState(null);
+  const[showCmd,setShowCmd]=useState(false);
+  const[toasts,setToasts]=useState([]);
+  const pushToast=React.useCallback((msg,type)=>{const id=Date.now()+Math.random();setToasts(t=>[...t,{id,msg,type:type||"info"}]);setTimeout(()=>setToasts(t=>t.filter(x=>x.id!==id)),4000);},[]);
   const ACTIVE_DATA = liveData || [];
   const MAX_SEL=6;
   const pickerRef=useRef(null);const logoInputRef=useRef(null);const PER=20;
@@ -680,14 +734,14 @@ useEffect(()=>{try{localStorage.setItem("shb_presets",JSON.stringify(presets));}
   const loadDemo=()=>{
     const rows=(DEMO_DATA.data||[]).map(d=>({...d,due:d.due||"",created:d.created||"",updated:d.updated||""}));
     setLiveData(rows);setLastSync(new Date());
-    setDebugInfo("⚠ Chế độ DEMO — "+rows.length+" task mẫu (không phải dữ liệu thật)");
+    setDebugInfo("⚠ Chế độ DEMO — "+rows.length+" task mẫu (không phải dữ liệu thật)");pushToast("Đang dùng dữ liệu DEMO","warn");
   };
   const doFetch = async()=>{
     setLoading(true);setSyncError(null);
     try{
       const rows=await fetchSheetData();
       console.log("[Dashboard] Rows fetched:", rows.length, rows[0]||"(empty)");
-      if(rows.length>0){setLiveData(rows);setLastSync(new Date());setDebugInfo(`data.json: ${rows.length} dòng`);setTimeout(()=>setDebugInfo(null),5000);}
+      if(rows.length>0){setLiveData(rows);setLastSync(new Date());setDebugInfo(`data.json: ${rows.length} dòng`);setTimeout(()=>setDebugInfo(null),5000);pushToast(`Đã đồng bộ ${rows.length} task`,"success");}
       else{loadDemo();}
     }catch(e){console.warn("Fetch fail, dùng DEMO:",e.message);loadDemo();}
     finally{setLoading(false);}
@@ -696,7 +750,7 @@ useEffect(()=>{try{localStorage.setItem("shb_presets",JSON.stringify(presets));}
   useEffect(()=>{const fn=e=>{if(drillRef.current&&!drillRef.current.contains(e.target))setDrillDown(null);};document.addEventListener("mousedown",fn);return()=>document.removeEventListener("mousedown",fn);},[]);
   useEffect(()=>{const fn=e=>{if(pickerRef.current&&!pickerRef.current.contains(e.target))setShowPicker(false);};document.addEventListener("mousedown",fn);return()=>document.removeEventListener("mousedown",fn);},[]);
   // Ctrl+F / Ctrl+K → focus search
-  useEffect(()=>{const fn=e=>{if((e.ctrlKey||e.metaKey)&&(e.key==="f"||e.key==="k")){e.preventDefault();const el=document.getElementById("cm-search");if(el){el.focus();el.select();}}if(e.key==="Escape"){setSearch("");setShowPicker(false);}};document.addEventListener("keydown",fn);return()=>document.removeEventListener("keydown",fn);},[]);
+  useEffect(()=>{const fn=e=>{if((e.ctrlKey||e.metaKey)&&(e.key==="k"||e.key==="K")){e.preventDefault();setShowCmd(o=>!o);return;}if((e.ctrlKey||e.metaKey)&&(e.key==="f"||e.key==="F")){e.preventDefault();const el=document.getElementById("cm-search");if(el){el.focus();el.select();}return;}if(e.key==="Escape"){setShowCmd(false);setSearch("");setShowPicker(false);}};document.addEventListener("keydown",fn);return()=>document.removeEventListener("keydown",fn);},[]);
   // Scroll-to-top
   const[scrollY,setScrollY]=useState(0);useEffect(()=>{const fn=()=>setScrollY(window.scrollY);window.addEventListener("scroll",fn,{passive:true});return()=>window.removeEventListener("scroll",fn);},[]);
   // Data quality
@@ -998,10 +1052,28 @@ useEffect(()=>{try{localStorage.setItem("shb_presets",JSON.stringify(presets));}
     }
   };
 
+  // ── Ambient health color + command palette items ──
+  const _closed=ACTIVE_DATA.filter(d=>getGrp(d.status)?.id==="closed").length;
+  const _scored=ACTIVE_DATA.filter(d=>getGrp(d.status)).length||1;
+  const overallRate=Math.round(_closed/_scored*100);
+  const healthColor=overallRate>=75?"#34D399":overallRate>=50?"#FBBF24":"#FB7185";
+  const cmdCommands=(()=>{const L=[];
+    L.push({group:"Lệnh",icon:"🔄",label:"Đồng bộ dữ liệu",hint:"Tải lại từ data.json",run:()=>doFetch()});
+    L.push({group:"Lệnh",icon:"📄",label:"Xuất PDF",hint:"Tải toàn bộ dashboard",run:()=>{const b=document.querySelector("[data-pdf-btn]");if(b)b.click();}});
+    L.push({group:"Lệnh",icon:theme==="dark"?"☀️":"🌙",label:theme==="dark"?"Chuyển giao diện Sáng":"Chuyển giao diện Tối",run:()=>toggleTheme()});
+    L.push({group:"Lệnh",icon:"⚙️",label:"Mở Tuỳ chỉnh Dashboard",run:()=>setShowSettings(true)});
+    L.push({group:"Lệnh",icon:"🔍",label:"Tìm kiếm task",hint:"Focus ô tìm kiếm",run:()=>{setTimeout(()=>{const el=document.getElementById("cm-search");if(el){el.focus();el.select();}},60);}});
+    if(activeCount>0)L.push({group:"Lệnh",icon:"🧹",label:"Xoá tất cả bộ lọc",run:()=>clearAll()});
+    [["Squad","Squad"],["Du_an","Dự án"],["Van_hoa","Văn hóa"]].forEach(([k,lbl])=>L.push({group:"Loại",icon:"📁",label:"Lọc loại: "+lbl,run:()=>toggle("loai",k)}));
+    SG.forEach(g=>L.push({group:"Trạng thái",icon:g.icon,label:"Lọc trạng thái: "+g.label,run:()=>toggle("statusGroup",g.id)}));
+    allDT.forEach(dt=>L.push({group:"Đối tượng",icon:"🎯",label:"Lọc: "+dt,run:()=>toggle("doi_tuong",dt)}));
+    dynamicAssignees.forEach(a=>L.push({group:"Người",icon:"👤",label:"Lọc người: "+a,run:()=>toggle("assignee",a)}));
+    allNhomK.forEach(n=>L.push({group:"Nhóm",icon:"👥",label:"Lọc nhóm: "+getNhomLabel(n),run:()=>toggle("nhom",n)}));
+    return L;})();
   return(
-    <div id="dashboard-root" data-theme={theme} style={{display:"flex",minHeight:"100vh",background:"var(--bg)",backgroundImage:"radial-gradient(ellipse 80% 40% at 50% -10%, rgba(129,140,248,.09), transparent)",fontFamily:FF,color:"var(--text)",transition:"background .3s ease, color .3s ease"}}>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..900;1,14..32,300..900&display=swap');*{box-sizing:border-box;margin:0;padding:0}body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--fg-08);border-radius:99px}::-webkit-scrollbar-thumb:hover{background:var(--fg-12)}input::placeholder{color:var(--text-dimmer)}input:focus{outline:none;box-shadow:0 0 0 2px var(--fg-10)}@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}@keyframes pulseTip{0%,100%{box-shadow:0 0 0 0 rgba(167,139,250,.4)}50%{box-shadow:0 0 0 8px rgba(167,139,250,0)}}@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}@keyframes fadeIn{from{opacity:0}to{opacity:1}}@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}@keyframes pulseRed{0%,100%{opacity:1}50%{opacity:.4}}@keyframes barEnter{from{width:0!important}to{}}@keyframes scaleIn{from{transform:scale(.92);opacity:0}to{transform:scale(1);opacity:1}}@keyframes slideInRight{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}.section-animate{animation:fadeUp .35s ease both}.bar-animate{animation:barEnter .6s cubic-bezier(.4,0,.2,1) both}.scale-in{animation:scaleIn .25s ease both}.sortable{cursor:pointer;user-select:none}.sortable:hover{color:var(--text-2)!important}@media print{.no-print{display:none!important}body{background:#fff!important}}@media (max-width:1400px){.kpi-grid,.status-grid{grid-template-columns:repeat(2,1fr)!important}.workload-grid,.trend-grid,.nhom-grid{grid-template-columns:1fr!important}}[data-theme] *{transition:background-color .2s ease,border-color .2s ease,color .18s ease;transition-property:background-color,border-color,color,box-shadow}input,button,select,svg *,.recharts-wrapper *{transition:none !important}`}</style>
-      <div className="no-print" style={{width:sidebarOpen?232:50,background:"linear-gradient(180deg, var(--bg-sidebar) 0%, #0C0E1E 100%)",borderRight:"1px solid var(--fg-08)",position:"sticky",top:0,height:"100vh",overflowY:"auto",overflowX:"hidden",flexShrink:0,transition:"width .25s ease"}}>
+    <div id="dashboard-root" data-theme={theme} style={{display:"flex",minHeight:"100vh",background:"var(--bg)",backgroundImage:`radial-gradient(ellipse 60% 45% at 10% -8%, ${healthColor}16, transparent 60%), radial-gradient(ellipse 55% 45% at 100% -2%, rgba(129,140,248,.13), transparent 55%), radial-gradient(ellipse 75% 55% at 50% 110%, rgba(45,212,191,.07), transparent 60%)`,backgroundAttachment:"fixed",fontFamily:FF,color:"var(--text)",transition:"background .3s ease, color .3s ease"}}>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300..900;1,14..32,300..900&display=swap');*{box-sizing:border-box;margin:0;padding:0}body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--fg-08);border-radius:99px}::-webkit-scrollbar-thumb:hover{background:var(--fg-12)}input::placeholder{color:var(--text-dimmer)}input:focus{outline:none;box-shadow:0 0 0 2px var(--fg-10)}@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}@keyframes pulseTip{0%,100%{box-shadow:0 0 0 0 rgba(167,139,250,.4)}50%{box-shadow:0 0 0 8px rgba(167,139,250,0)}}@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}@keyframes fadeIn{from{opacity:0}to{opacity:1}}@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}@keyframes pulseRed{0%,100%{opacity:1}50%{opacity:.4}}@keyframes barEnter{from{width:0!important}to{}}@keyframes scaleIn{from{transform:scale(.92);opacity:0}to{transform:scale(1);opacity:1}}@keyframes cmdIn{from{transform:translateY(-14px) scale(.98);opacity:0}to{transform:translateY(0) scale(1);opacity:1}}@keyframes toastIn{from{transform:translateX(44px);opacity:0}to{transform:translateX(0);opacity:1}}@keyframes pulseLive{0%{box-shadow:0 0 0 0 rgba(52,211,153,.5)}70%{box-shadow:0 0 0 7px rgba(52,211,153,0)}100%{box-shadow:0 0 0 0 rgba(52,211,153,0)}}@keyframes slideInRight{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}.section-animate{animation:fadeUp .5s cubic-bezier(.22,1,.36,1) both}.bar-animate{animation:barEnter .85s cubic-bezier(.34,1.56,.64,1) both}.scale-in{animation:scaleIn .25s ease both}.sortable{cursor:pointer;user-select:none}.sortable:hover{color:var(--text-2)!important}@media print{.no-print{display:none!important}body{background:#fff!important}}@media (max-width:1400px){.kpi-grid,.status-grid{grid-template-columns:repeat(2,1fr)!important}.workload-grid,.trend-grid,.nhom-grid{grid-template-columns:1fr!important}}[data-theme] *{transition:background-color .2s ease,border-color .2s ease,color .18s ease;transition-property:background-color,border-color,color,box-shadow}input,button,select,svg *,.recharts-wrapper *{transition:none !important}`}</style>
+      <div className="no-print" style={{width:sidebarOpen?232:50,background:"var(--sidebar-grad)",borderRight:"1px solid var(--fg-08)",position:"sticky",top:0,height:"100vh",overflowY:"auto",overflowX:"hidden",flexShrink:0,transition:"width .25s ease"}}>
         <div style={{padding:"12px 10px",borderBottom:"1px solid var(--fg-05)"}}><div style={{display:"flex",alignItems:"center",gap:8}}><div onClick={()=>setSidebarOpen(o=>!o)} style={{width:32,height:24,cursor:"pointer",flexShrink:0,display:"flex",alignItems:"center",justifyContent:"center"}}>{cfg.logoUrl?<img src={cfg.logoUrl} alt="logo" style={{width:28,height:28,objectFit:"contain",borderRadius:4}}/>:<div style={{fontWeight:900,fontSize:11,color:"#A78BFA",letterSpacing:1,textShadow:"0 0 12px #A78BFA88"}}>CM</div>}</div>{sidebarOpen&&<><div style={{flex:1,minWidth:0}}><div style={{fontWeight:700,fontSize:11,color:"var(--text)",whiteSpace:"nowrap",overflow:"hidden",textOverflow:"ellipsis"}}>{cfg.appName}</div><div style={{display:"flex",alignItems:"center",gap:4,marginTop:2}}><div style={{width:5,height:5,borderRadius:"50%",background:loading?"#A78BFA":liveData?"#34D399":"var(--text-5)",boxShadow:loading?"0 0 5px #A78BFA":liveData?"0 0 5px #34D399":"none",animation:loading?"pulse 1s infinite":"none"}}/><span style={{fontSize:9,color:loading?"#A78BFA":liveData?"#34D399":"#FBBF24"}}>{loading?"Đang tải...":liveData?cfg.liveBadge:"Chờ dữ liệu..."}</span></div></div><div onClick={()=>setSidebarOpen(false)} style={{cursor:"pointer",color:"var(--text-dimmer)",fontSize:13,padding:3}}>◀</div></>}</div></div>
         {sidebarOpen&&<div style={{padding:"10px 8px"}}>{activeCount>0&&<button onClick={clearAll} style={{width:"100%",padding:"5px",background:`${C.accent}18`,border:`1px solid ${C.accent}30`,borderRadius:8,color:C.accent,fontSize:10,cursor:"pointer",fontWeight:600,marginBottom:10}}>&#10005; {cfg.ui.clearFilter} ({activeCount})</button>}{allWorkTypes.length>1&&<FilterSection title={cfg.ui?.filterLabels?.worktype||"Loại công việc"} icon="&#9881;" badge={f.work_type.length} accent={C.accent} defaultOpen>{allWorkTypes.map(wt=><FilterItem key={wt} label={wt} count={rangeRaw.filter(d=>d.work_type===wt).length} active={f.work_type.includes(wt)} onClick={()=>toggle("work_type",wt)} accent={C.accent}/>)}</FilterSection>}<FilterSection title={cfg.ui.filterLabels.loai} icon="&#128194;" defaultOpen badge={f.loai.length} accent={C.accent}>{[["Squad",C.squad],["Du_an",C.duan],["Van_hoa",C.vanhoa]].map(([k,c])=><FilterItem key={k} label={cfg.ui.loaiNames[k]||k} count={rangeRaw.filter(d=>d.loai===k).length} active={f.loai.includes(k)} color={c} onClick={()=>toggle("loai",k)} accent={C.accent}/>)}</FilterSection><FilterSection title={cfg.ui.filterLabels.status} icon="&#128202;" defaultOpen badge={f.statusGroup.length} accent={C.accent}>{SG.map(g=><FilterItem key={g.id} label={g.label} count={rangeRaw.filter(d=>getGrp(d.status)?.id===g.id).length} active={f.statusGroup.includes(g.id)} color={g.color} onClick={()=>toggle("statusGroup",g.id)} accent={C.accent}/>)}</FilterSection><FilterSection title={cfg.ui.filterLabels.doituong} icon="&#127919;" badge={f.doi_tuong.length} accent={C.accent}>{allDT.map(dt=><FilterItem key={dt} label={dt.replace("Dự án ","").replace("Văn hóa ","")} count={rangeRaw.filter(d=>d.doi_tuong===dt).length} active={f.doi_tuong.includes(dt)} onClick={()=>toggle("doi_tuong",dt)} accent={C.accent}/>)}</FilterSection><FilterSection title={cfg.ui.filterLabels.nhom} icon="&#128101;" badge={f.nhom.length} accent={C.accent}>{allNhomK.map(n=><FilterItem key={n} label={getNhomLabel(n)} count={rangeRaw.filter(d=>d.nhom===n).length} active={f.nhom.includes(n)} onClick={()=>toggle("nhom",n)} accent={C.accent}/>)}</FilterSection><FilterSection title={cfg.ui.filterLabels.hangmuc||"Hạng mục"} icon="&#128203;" badge={f.hang_muc.length} accent={C.accent}>{allHangMuc.map(h=><FilterItem key={h} label={h} count={rangeRaw.filter(d=>d.hang_muc===h).length} active={f.hang_muc.includes(h)} onClick={()=>toggle("hang_muc",h)} accent={C.accent}/>)}</FilterSection><FilterSection title={cfg.ui.filterLabels.hmchuan||"Hạng mục chuẩn"} icon="&#9989;" badge={f.hang_muc_chuan.length} accent={C.accent}>{allHangMucChuan.map(h=><FilterItem key={h} label={cfg.hmChuanLabels?.[h]||h} count={rangeRaw.filter(d=>d.hang_muc_chuan===h).length} active={f.hang_muc_chuan.includes(h)} onClick={()=>toggle("hang_muc_chuan",h)} accent={C.accent}/>)}</FilterSection><FilterSection title={cfg.ui.filterLabels.assignee} icon="&#128100;" badge={f.assignee.length} accent={C.accent}>{dynamicAssignees.map((a,i)=><FilterItem key={a} label={a} count={rangeRaw.filter(d=>d.assignee===a).length} active={f.assignee.includes(a)} color={AVT_COLORS[i%AVT_COLORS.length]} onClick={()=>toggle("assignee",a)} accent={C.accent}/>)}</FilterSection></div>}
         {!sidebarOpen&&<div style={{display:"flex",flexDirection:"column",alignItems:"center",padding:"10px 0",gap:6}}><div onClick={()=>setSidebarOpen(true)} style={{cursor:"pointer",color:"var(--text-dim)",fontSize:14,padding:6}}>▶</div>{activeCount>0&&<div style={{width:7,height:7,borderRadius:"50%",background:C.accent}}/>}</div>}
@@ -1009,7 +1081,7 @@ useEffect(()=>{try{localStorage.setItem("shb_presets",JSON.stringify(presets));}
       <div style={{flex:1,overflowY:"auto",padding:"16px 18px 40px",minWidth:0}}>
         <div style={{display:"flex",alignItems:"flex-start",justifyContent:"space-between",marginBottom:12}}>
           <div style={{display:"flex",alignItems:"center",gap:12}}><div style={{display:"flex",alignItems:"center",gap:4}}>{cfg.logoUrl?<img src={cfg.logoUrl} alt="logo" style={{width:36,height:36,objectFit:"contain",borderRadius:8}}/>:<div style={{width:32,height:32,background:"linear-gradient(135deg,#A78BFA,#1B2F6E)",borderRadius:8,display:"flex",alignItems:"center",justifyContent:"center",fontWeight:900,fontSize:13,color:"#fff",letterSpacing:0.5}}>CM</div>}</div><div><h1 style={{fontWeight:800,fontSize:18,color:"var(--text-bright)",letterSpacing:"-0.3px"}}>{cfg.appName}</h1><div style={{fontSize:10,color:"var(--text-dimmer)",marginTop:2}}>{cfg.appSub}</div></div></div>
-          <div style={{display:"flex",gap:8,alignItems:"center",flexWrap:"wrap",justifyContent:"flex-end"}}>{Object.entries(f).filter(([,arr])=>arr.length>0).flatMap(([k,arr])=>arr.map(v=>({k,v}))).map(({k,v},i)=><span key={k+v+i} onClick={()=>toggle(k,v)} style={{padding:"3px 9px",background:`${C.accent}18`,border:`1px solid ${C.accent}35`,borderRadius:12,fontSize:10,color:C.accent,cursor:"pointer",whiteSpace:"nowrap",display:"flex",alignItems:"center",gap:4}}><span>{cfg.nhomLabels[v]||SG.find(g=>g.id===v)?.label||cfg.ui.loaiNames[v]||v}</span><span>&#10005;</span></span>)}<div style={{position:"relative"}}>{showTip&&<div style={{position:"absolute",top:"calc(100% + 8px)",right:0,background:"var(--surface-hi)",border:`1px solid ${C.accent}50`,borderRadius:10,padding:"10px 14px",fontSize:11,color:"var(--text)",width:220,boxShadow:"0 12px 32px rgba(var(--shadow-rgb),.5)",zIndex:50}}><div style={{position:"absolute",top:-5,right:18,width:9,height:9,background:"var(--surface-hi)",borderLeft:`1px solid ${C.accent}50`,borderTop:`1px solid ${C.accent}50`,transform:"rotate(45deg)"}}/><div style={{fontWeight:700,color:C.accent,fontSize:11,marginBottom:4}}>👋 Tuỳ chỉnh dashboard</div><div style={{color:"var(--text-3)",lineHeight:1.5,fontSize:11}}>Đổi tên cột, màu sắc, sắp xếp section — tất cả lưu tự động.</div><div onClick={()=>{setShowTip(false);try{localStorage.setItem("cm_tip_seen_v1","1");}catch{}}} style={{marginTop:8,fontSize:10,color:C.accent,cursor:"pointer",fontWeight:600}}>Đã hiểu →</div></div>}<button onClick={toggleTheme} title={theme==="dark"?"Chuyển giao diện sáng":"Chuyển giao diện tối"} style={{padding:"7px 11px",background:"var(--fg-05)",border:"1px solid var(--fg-10)",borderRadius:8,fontSize:13,cursor:"pointer",display:"flex",alignItems:"center",transition:"all .2s",lineHeight:1}}>{theme==="dark"?"☀️":"🌙"}</button><button onClick={()=>{setShowSettings(true);setShowTip(false);try{localStorage.setItem("cm_tip_seen_v1","1");}catch{}}} style={{padding:"7px 12px",background:showTip?`${C.accent}20`:"var(--fg-05)",border:showTip?`1px solid ${C.accent}50`:"1px solid var(--fg-10)",borderRadius:8,color:showTip?C.accent:"var(--text-3)",fontSize:11,cursor:"pointer",display:"flex",alignItems:"center",gap:5,animation:showTip?"pulseTip 2s ease-in-out infinite":"none"}}>&#9881; Tuỳ chỉnh</button></div><div style={{display:"flex",alignItems:"center",gap:0,background:"var(--fg-05)",border:"1px solid var(--fg-10)",borderRadius:8,overflow:"hidden"}}>
+          <div style={{display:"flex",gap:8,alignItems:"center",flexWrap:"wrap",justifyContent:"flex-end"}}>{Object.entries(f).filter(([,arr])=>arr.length>0).flatMap(([k,arr])=>arr.map(v=>({k,v}))).map(({k,v},i)=><span key={k+v+i} onClick={()=>toggle(k,v)} style={{padding:"3px 9px",background:`${C.accent}18`,border:`1px solid ${C.accent}35`,borderRadius:12,fontSize:10,color:C.accent,cursor:"pointer",whiteSpace:"nowrap",display:"flex",alignItems:"center",gap:4}}><span>{cfg.nhomLabels[v]||SG.find(g=>g.id===v)?.label||cfg.ui.loaiNames[v]||v}</span><span>&#10005;</span></span>)}<div style={{position:"relative"}}>{showTip&&<div style={{position:"absolute",top:"calc(100% + 8px)",right:0,background:"var(--surface-hi)",border:`1px solid ${C.accent}50`,borderRadius:10,padding:"10px 14px",fontSize:11,color:"var(--text)",width:220,boxShadow:"0 12px 32px rgba(var(--shadow-rgb),.5)",zIndex:50}}><div style={{position:"absolute",top:-5,right:18,width:9,height:9,background:"var(--surface-hi)",borderLeft:`1px solid ${C.accent}50`,borderTop:`1px solid ${C.accent}50`,transform:"rotate(45deg)"}}/><div style={{fontWeight:700,color:C.accent,fontSize:11,marginBottom:4}}>👋 Tuỳ chỉnh dashboard</div><div style={{color:"var(--text-3)",lineHeight:1.5,fontSize:11}}>Đổi tên cột, màu sắc, sắp xếp section — tất cả lưu tự động.</div><div onClick={()=>{setShowTip(false);try{localStorage.setItem("cm_tip_seen_v1","1");}catch{}}} style={{marginTop:8,fontSize:10,color:C.accent,cursor:"pointer",fontWeight:600}}>Đã hiểu →</div></div>}<button onClick={()=>setShowCmd(true)} title="Lệnh nhanh (Ctrl+K)" style={{padding:"7px 11px",background:"var(--fg-05)",border:"1px solid var(--fg-10)",borderRadius:8,fontSize:11,fontWeight:600,cursor:"pointer",display:"flex",alignItems:"center",gap:4,color:"var(--text-3)",lineHeight:1}}>⌘K</button><button onClick={toggleTheme} title={theme==="dark"?"Chuyển giao diện sáng":"Chuyển giao diện tối"} style={{padding:"7px 11px",background:"var(--fg-05)",border:"1px solid var(--fg-10)",borderRadius:8,fontSize:13,cursor:"pointer",display:"flex",alignItems:"center",transition:"all .2s",lineHeight:1}}>{theme==="dark"?"☀️":"🌙"}</button><button onClick={()=>{setShowSettings(true);setShowTip(false);try{localStorage.setItem("cm_tip_seen_v1","1");}catch{}}} style={{padding:"7px 12px",background:showTip?`${C.accent}20`:"var(--fg-05)",border:showTip?`1px solid ${C.accent}50`:"1px solid var(--fg-10)",borderRadius:8,color:showTip?C.accent:"var(--text-3)",fontSize:11,cursor:"pointer",display:"flex",alignItems:"center",gap:5,animation:showTip?"pulseTip 2s ease-in-out infinite":"none"}}>&#9881; Tuỳ chỉnh</button></div><div style={{display:"flex",alignItems:"center",gap:0,background:"var(--fg-05)",border:"1px solid var(--fg-10)",borderRadius:8,overflow:"hidden"}}>
   <button onClick={async()=>{
   setLoading(true);
   try{
@@ -1098,8 +1170,10 @@ useEffect(()=>{try{localStorage.setItem("shb_presets",JSON.stringify(presets));}
 {ACTIVE_DATA.length>0&&(dqNoDue>0||dqNoAssign>0||dqBadStatus>0)&&<div style={{position:"fixed",bottom:80,right:20,zIndex:200}}><Tip text={`Chất lượng dữ liệu: ${dqScore}%\n• ${dqNoDue} task thiếu deadline\n• ${dqNoAssign} task chưa giao người\n• ${dqBadStatus} task thiếu trạng thái`} w={220}><div style={{background:"var(--surface-hi)",border:`1px solid ${dqScore>80?"var(--fg-08)":dqScore>60?"#FBBF2466":"#FB718566"}`,borderRadius:12,padding:"7px 12px",display:"flex",alignItems:"center",gap:8,cursor:"help",boxShadow:"0 4px 16px rgba(0,0,0,.4)"}}><div style={{width:8,height:8,borderRadius:"50%",background:dqScore>80?"#34D399":dqScore>60?"#FBBF24":"#FB7185",boxShadow:`0 0 8px ${dqScore>80?"#34D399":dqScore>60?"#FBBF24":"#FB7185"}`}}/><span style={{fontSize:11,fontWeight:700,color:"var(--text-2)"}}>DQ {dqScore}%</span></div></Tip></div>}
 {/* Scroll to top */}
 {scrollY>400&&<button onClick={()=>window.scrollTo({top:0,behavior:"smooth"})} style={{position:"fixed",bottom:20,right:20,zIndex:200,width:42,height:42,borderRadius:14,background:"var(--surface-hi)",border:"1px solid var(--fg-10)",boxShadow:"0 4px 16px rgba(0,0,0,.4)",cursor:"pointer",display:"flex",alignItems:"center",justifyContent:"center",fontSize:16,color:"var(--text-3)",transition:"all .2s"}} onMouseEnter={e=>{e.currentTarget.style.background=C.accent;e.currentTarget.style.color="#fff";}} onMouseLeave={e=>{e.currentTarget.style.background="var(--surface-hi)";e.currentTarget.style.color="var(--text-3)";}}>↑</button>}
+<CmdPalette open={showCmd} onClose={()=>setShowCmd(false)} commands={cmdCommands} accent={C.accent}/>
+<ToastHost toasts={toasts}/>
 {/* Keyboard shortcut hint */}
-{!search&&<div style={{position:"fixed",bottom:20,left:"50%",transform:"translateX(-50%)",zIndex:100,pointerEvents:"none",animation:"fadeIn .5s ease 2s both"}}><span style={{fontSize:10,color:"var(--text-dimmer)",background:"var(--surface-hi)",border:"1px solid var(--fg-06)",borderRadius:8,padding:"4px 10px"}}>Ctrl+F tìm kiếm · Esc xóa bộ lọc</span></div>}
+{!search&&<div style={{position:"fixed",bottom:20,left:"50%",transform:"translateX(-50%)",zIndex:100,pointerEvents:"none",animation:"fadeIn .5s ease 2s both"}}><span style={{fontSize:10,color:"var(--text-dimmer)",background:"var(--surface-hi)",border:"1px solid var(--fg-06)",borderRadius:8,padding:"4px 10px"}}>⌘K lệnh nhanh · Ctrl+F tìm kiếm · Esc xoá lọc</span></div>}
     </div>
   );
 }
