@@ -100,7 +100,7 @@ Line: "+line+":"+col;
 window.onerror=function(msg,src,line,col,err){window.__showErr(msg,src,line,col,err);return false;};
 window.addEventListener("unhandledrejection",function(e){window.__showErr("Unhandled Promise: "+(e.reason?.stack||e.reason||e),"",0,0,null);});
 </script>
-<script type="text/babel" data-presets="react">
+<script type="text/babel" data-presets="react" data-plugins="transform-block-scoping">
 
 
 
