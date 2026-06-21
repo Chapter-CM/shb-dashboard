@@ -1,0 +1,2 @@
+/* Inter via system install or fallback to UI fonts */
+:root { font-family: "Inter", "Inter Variable", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
